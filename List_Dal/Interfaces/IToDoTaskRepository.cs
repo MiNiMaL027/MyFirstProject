@@ -18,6 +18,6 @@ namespace List_Dal.Interfaces
         //Task<List<T>> GetFavorite();    
         //Task<List<T>> GetCompleted();
         Task<bool> CompleteOrUncompleteTask(int key);
-        Task<List<ToDoTask>> GetAll(long key, string softListName, string orderName, bool orderType, int importantvalue);
+        Task<List<ToDoTask>> GetAll(long? key, string? softListName, string? orderName, bool orderType, int? importantvalue);
     }
 }

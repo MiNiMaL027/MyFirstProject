@@ -86,7 +86,7 @@ namespace List_Dal.Repositories
            return await dbSet.Where(t=>t.ToDoListId == key && t.IsDeleted==false).ToListAsync();
         }
 
-        public async Task<List<ToDoTask>> GetAll(long key,string softListName,string orderName,bool orderType,int importantvalue)
+        public async Task<List<ToDoTask>> GetAll(long? key,string? softListName,string? orderName,bool orderType,int? importantvalue)
         {           
             var list = dbSet.Where(t => t.IsDeleted == false);
             switch (softListName)

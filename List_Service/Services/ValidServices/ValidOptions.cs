@@ -20,12 +20,14 @@
         /// </summary>
         /// <param name="importanceValue"></param>
         /// <returns>True or False</returns>
-        public static bool ValidImportance(int importanceValue)
-        { 
+        public static bool ValidImportance(int? importanceValue)
+        {
+            if (importanceValue == null)
+                return true;
             if(importanceValue > 3)
                 return false;
             if(importanceValue < 1)
-                return false;
+                return false;          
             return true;
         }
     }

@@ -35,7 +35,7 @@ namespace MyFirstProject_Api.Controllers
         }
 
         [HttpGet("AlLOrder")]
-        public async Task<ActionResult<List<ToDoTask>>> GetAll(long listId,string softListName,string orderName,bool orderType,int importantValue)
+        public async Task<ActionResult<List<ToDoTask>>> GetAll(long? listId,string? softListName,string? orderName,bool orderType,int? importantValue)
         {
             return Ok(await service.GetAll(listId, softListName, orderName, orderType, importantValue));
         }

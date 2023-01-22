@@ -45,7 +45,7 @@ namespace List_Service.Services
             return await _repository.GetAllTaskByList((int)id);
         }
 
-        public async Task<List<ToDoTask>> GetAll(long key, string softListName, string orderName, bool orderType, int importantvalue)
+        public async Task<List<ToDoTask>> GetAll(long? key, string? softListName, string? orderName, bool orderType, int? importantvalue)
         {
             if (!ValidOptions.ValidImportance(importantvalue))
                 throw new Exception("Uncorrect importance");
