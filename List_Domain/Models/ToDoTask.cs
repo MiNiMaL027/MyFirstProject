@@ -8,9 +8,9 @@ namespace List_Domain.Models
         public int Importance { get; set; }
         public string? Description { get; set; }
         public string Title { get; set; }
-        public DateTime? DueData { get; set; }     
+        public DateTime? DueData { get; set; } // DueToDate
         public bool IsCompleted { get; set; }
-        public bool IsFavorites { get; set; }
+        public bool IsFavorites { get; set; } // IsFavorite
         public bool IsDeleted { get; set; }
         public int ToDoListId { get; set; }
         public ToDoList? ToDoList { get; set; }

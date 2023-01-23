@@ -8,8 +8,8 @@ namespace MyFirstProject_Api.Controllers
     [ApiController]
     public class ToDoListController : Controller
     {
-        public ToDoListService service { get; set; }
-        public ToDoListController(ToDoListService service)
+        public ToDoListService service { get; set; } // приватна рідонла змінна 
+        public ToDoListController(ToDoListService service) // інтерфес
         {
             this.service = service;
         }
@@ -17,12 +17,12 @@ namespace MyFirstProject_Api.Controllers
         [HttpGet("All")]
         public async Task<ActionResult<List<ToDoList>>> GetList() 
         {
-            var c = Ok(await service.GetAll());
+            var c = Ok(await service.GetAll()); // в чому прикол? просто return OK....
             return c;
         }
 
         [HttpGet("Alone")]
-        public async Task<ActionResult<ToDoList>> Get(long id)
+        public async Task<ActionResult<ToDoList>> Get(long id) // інт
         {
             return Ok(await service.Get(id));
         }
@@ -35,7 +35,7 @@ namespace MyFirstProject_Api.Controllers
         }
 
         [HttpDelete("DataDelete")]
-        public async Task<ActionResult<int>> Remove(long id)
+        public async Task<ActionResult<int>> Remove(long id) // інт
         {
             if(await service.Remove(id))
              return Ok(id);
@@ -43,7 +43,7 @@ namespace MyFirstProject_Api.Controllers
         }
 
         [HttpDelete("SoftDelete")]
-        public async Task<ActionResult<int>> SoftRemove(long id)
+        public async Task<ActionResult<int>> SoftRemove(long id) // інт
         {
             if(await service.SoftRemove(id))
                return Ok(id);
