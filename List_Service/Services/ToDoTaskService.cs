@@ -15,13 +15,13 @@ namespace List_Service.Services
 
         public async Task Add(ToDoTask item)
         {
-            if (await _repository.FindName(item.Title))
-                throw new Exception("This name you used");
+            if (await _repository.FindName(item.Title)) //Навчися робити кастомні ексепшини, так ніхто не кидає, 
+                throw new Exception("This name you used"); // AlreadyExistException
             item.Title = item.Title.Trim();
             if (!ValidOptions.ValidName(item.Title))
                 throw new Exception("The name is not correct");
             if (!ValidOptions.ValidImportance(item.Importance))
-                throw new Exception("Uncorrect importance");
+                throw new Exception("Uncorrect importance"); // ImportanceNotFoundException
             await _repository.Add(item);
         }
 

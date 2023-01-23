@@ -9,8 +9,8 @@ namespace MyFirstProject_Api.Controllers
     [ApiController]
     public class ToDoTaskController : Controller
     {
-        public ToDoTaskService service { get; set; }
-        public ToDoTaskController(ToDoTaskService service)
+        public ToDoTaskService service { get; set; } // прайвет рідонлі змінна
+        public ToDoTaskController(ToDoTaskService service) // інтерфейс
         {
             this.service = service;
         }
@@ -106,7 +106,7 @@ namespace MyFirstProject_Api.Controllers
         }
 
         [HttpDelete("SoftDelete")]
-        public async Task<ActionResult<int>> SoftDelete(long id)
+        public async Task<ActionResult<int>> SoftDelete(long id) // всюди інти
         {
             await service.SoftRemove(id);
             return Ok(id);

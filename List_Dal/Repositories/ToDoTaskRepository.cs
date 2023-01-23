@@ -17,37 +17,37 @@ namespace List_Dal.Repositories
         public ToDoTaskRepository(ApplicationContext context)
         {
             db = context;
-            dbSet = db.Set<ToDoTask>();
+            dbSet = db.Set<ToDoTask>(); // ToDoTasks 
         }
 
-        public async Task Add(ToDoTask task)
+        public async Task Add(ToDoTask task) //  має повертати айді
         {
-            dbSet.Add(task);
+            dbSet.Add(task);// Адд повертає ентетю з бази яку ти не ловиш, хапаєш айді і передаєш його на ендпойнт
             await db.SaveChangesAsync();
         }
-        /// <summary>
-        /// will check if there is transferred to whether it meets the norms
+        /// <summary> 
+        /// will check if there is transferred to whether it meets the norms 
         /// </summary>
         /// <param name="name"></param>
         /// <returns>True or False</returns>
-        public async Task<bool> FindName(string name)
+        public async Task<bool> FindName(string name) // CheckIfNameExists, названо всюди нейм, а шукаєш тайтл
         {
             if (!await dbSet.AnyAsync(i => i.Title == name))
                 return false;
             return true;
         }
 
-        public async Task<ToDoTask?> Get(long key)
+        public async Task<ToDoTask?> Get(long key) // GetById, для чого тут лонг якщо воно інт? витрачаєш лишню оперативку
         {
             return await dbSet.FirstOrDefaultAsync(i => i.Id == (int)key && i.IsDeleted == false);
         }
 
         public async Task<IEnumerable<ToDoTask?>> GetAll()
         {
-            return await dbSet.Where(i => i.IsDeleted == false).ToListAsync();
+            return await dbSet.Where(i => i.IsDeleted == false).ToListAsync(); //  i.IsDeleted == false це те саме що !i.IsDeleted, якщо змінна сама по саобі булл то її нема сенсу порівнювати
         }
 
-        public async Task<bool> Remove(long key)
+        public async Task<bool> Remove(long key) // Лонг тут не потрібен, зроби інт
         {
             ToDoTask? entity = await dbSet.FindAsync((int)key);
             if (entity != null)
@@ -59,10 +59,10 @@ namespace List_Dal.Repositories
             return false;
         }
 
-        public async Task<bool> SoftRemove(long key)
+        public async Task<bool> SoftRemove(long key) // Не лонг а інт
         {
             var item = await dbSet.FindAsync((int)key);
-            if (item.IsDeleted == false)
+            if (item.IsDeleted == false) // Айтем може буи NULL впаде ексепшн який ти не ловиш
             {
                 item.IsDeleted = true;
                 db.SaveChanges();
@@ -72,7 +72,7 @@ namespace List_Dal.Repositories
 
         public async Task<bool> Update(ToDoTask task)
         {
-            if(dbSet.Contains(task) && task.IsDeleted == false)
+            if(dbSet.Contains(task) && task.IsDeleted == false) // !task.IsDeleted, dbSet.Contains(task) тут має бути гет бай айді і перевірка на null, я не вірю що він працює
             {
                 dbSet.Update(task);
                 await db.SaveChangesAsync();
@@ -81,12 +81,13 @@ namespace List_Dal.Repositories
             return false;
         }
 
-        public async Task<List<ToDoTask>> GetAllTaskByList(long key)
+        public async Task<List<ToDoTask>> GetAllTaskByList(long key) // інт
         {
-           return await dbSet.Where(t=>t.ToDoListId == key && t.IsDeleted==false).ToListAsync();
+           return await dbSet.Where(t=>t.ToDoListId == key && t.IsDeleted==false).ToListAsync(); // пробіли і не треба умови на IsDeleted
         }
 
-        public async Task<List<ToDoTask>> GetAll(long? key,string? softListName,string? orderName,bool orderType,int? importantvalue)
+        public async Task<List<ToDoTask>> GetAll(long? key,string? softListName,string? orderName,bool orderType,int? importantvalue)// пробіли після ком,
+ // ну от і приїхали) ти на це напевне в тричі більше часу потратив ніж вивчив би що таке OData, цей код треш, уявлю що я його не бачив))так не робиться       
         {           
             var list = dbSet.Where(t => t.IsDeleted == false);
             switch (softListName)
@@ -101,10 +102,10 @@ namespace List_Dal.Repositories
                     list = list.Where(i => i.Importance == importantvalue);
                     break;
                 case "Favorite":
-                    list = list.Where(i => i.IsFavorites == true);
+                    list = list.Where(i => i.IsFavorites == true); // не треба умови на інт
                     break;
                 case "Completed":
-                    list = list.Where(i => i.IsCompleted == true);
+                    list = list.Where(i => i.IsCompleted == true); // не треба умови на інт
                     break;
                 default:
                     list = list.Where(i => i.ToDoListId == key);
@@ -148,12 +149,12 @@ namespace List_Dal.Repositories
             return listResult;
 
         }
-        public async Task<List<int>> SoftRemoveFew(List<int> keys)
+        public async Task<List<int>> SoftRemoveFew(List<int> keys) // DeleteMultiple, Ids
         {
             for (int i = 0; i < keys.Count; i++)
             {
                 var item = await dbSet.FindAsync(keys[i]);
-                if (item.IsDeleted == false)
+                if (item.IsDeleted == false) // не порівнюй бул і айтем може бути нуль, ексепшн не хендлиш
                 {
                     item.IsDeleted = true;
                     db.SaveChanges();
@@ -212,10 +213,10 @@ namespace List_Dal.Repositories
         //    return await dbSet.Where(i=>i.IsCompleted == true).ToListAsync();
         //}
         #endregion
-        public async Task<bool> CompleteOrUncompleteTask(int key)
+        public async Task<bool> CompleteOrUncompleteTask(int key)// Id
         {
             var item = await dbSet.FindAsync(key);
-            if(item.IsCompleted == false) 
+            if(item.IsCompleted == false) // то саме, ексепшн якщо не знайде
             { 
                 item.IsCompleted= true;              
             }

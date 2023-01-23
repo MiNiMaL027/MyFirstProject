@@ -23,17 +23,18 @@ namespace List_Service.Services
             await _repository.Add(list);         
         }
 
-        public async Task<ToDoList> Get(long key)
+        public async Task<ToDoList> Get(long key) //Id
         {
             return await _repository.Get(key);
         }
 
         public async Task<List<ToDoList>> GetAll()
         {
-            return (List<ToDoList>)await _repository.GetAll();
+            return (List<ToDoList>)await _repository.GetAll(); //кастити можна тільки в потрібних моментах, про каст листів взагалі забудь, це дуууже дорога операція
+                                                               //в 99% ти десь просто облажався з типами, як тут 
         }
 
-        public async Task<bool> Remove(long key)
+        public async Task<bool> Remove(long key)//Id
         {
             return await _repository.Remove(key);
         }
@@ -43,7 +44,7 @@ namespace List_Service.Services
            return await _repository.Update(list);
         }
 
-        public async Task<bool> SoftRemove(long key)
+        public async Task<bool> SoftRemove(long key)//Id
         {
             return await _repository.SoftRemove(key);
         }

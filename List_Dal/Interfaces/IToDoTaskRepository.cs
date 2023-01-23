@@ -4,7 +4,7 @@ namespace List_Dal.Interfaces
 {
     public interface IToDoTaskRepository<T> : IDefaultRepository<T> where T : class
     {
-        Task<bool> FindName(string name);
+        Task<bool> FindName(string name); // FindByName
 
         Task<List<T>> GetAllTaskByList(long key);
         Task<List<int>> SoftRemoveFew(List<int> item);
