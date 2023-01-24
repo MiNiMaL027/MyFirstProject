@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace List_Service.Interfaces
 {
-    internal interface IToDoListService<T> : IDefaultService<T> where T : class
+    public interface IToDoListService<T> : IDefaultService<T> where T : class
     {
     }
 }

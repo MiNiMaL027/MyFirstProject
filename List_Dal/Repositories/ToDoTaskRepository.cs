@@ -20,17 +20,18 @@ namespace List_Dal.Repositories
             dbSet = db.Set<ToDoTask>();
         }
 
-        public async Task Add(ToDoTask task)
+        public async Task<int> Add(ToDoTask task)
         {
             dbSet.Add(task);
             await db.SaveChangesAsync();
+            return task.Id;
         }
         /// <summary>
         /// will check if there is transferred to whether it meets the norms
         /// </summary>
         /// <param name="name"></param>
         /// <returns>True or False</returns>
-        public async Task<bool> FindName(string name)
+        public async Task<bool> FindByName(string name)
         {
             if (!await dbSet.AnyAsync(i => i.Title == name))
                 return false;
@@ -49,19 +50,9 @@ namespace List_Dal.Repositories
 
         public async Task<bool> Remove(long key)
         {
-            ToDoTask? entity = await dbSet.FindAsync((int)key);
-            if (entity != null)
-            {
-                db.Remove(entity);
-                db.SaveChanges();
-                return true;
-            }
-            return false;
-        }
-
-        public async Task<bool> SoftRemove(long key)
-        {
             var item = await dbSet.FindAsync((int)key);
+            if (item == null)
+                throw new Exception("Not possible remove not existing item");
             if (item.IsDeleted == false)
             {
                 item.IsDeleted = true;
@@ -72,6 +63,8 @@ namespace List_Dal.Repositories
 
         public async Task<bool> Update(ToDoTask task)
         {
+            if (task == null)
+                throw new Exception("Not possible update not existing item");
             if(dbSet.Contains(task) && task.IsDeleted == false)
             {
                 dbSet.Update(task);
@@ -86,7 +79,7 @@ namespace List_Dal.Repositories
            return await dbSet.Where(t=>t.ToDoListId == key && t.IsDeleted==false).ToListAsync();
         }
 
-        public async Task<List<ToDoTask>> GetAll(long? key,string? softListName,string? orderName,bool orderType,int? importantvalue)
+        public async Task<List<ToDoTask>> GetAll(long? key, string? softListName, string? orderName, bool orderType, int? importantvalue)
         {           
             var list = dbSet.Where(t => t.IsDeleted == false);
             switch (softListName)
@@ -148,11 +141,13 @@ namespace List_Dal.Repositories
             return listResult;
 
         }
-        public async Task<List<int>> SoftRemoveFew(List<int> keys)
+        public async Task<List<int>> RemoveMultiple(List<int> keys)
         {
             for (int i = 0; i < keys.Count; i++)
             {
                 var item = await dbSet.FindAsync(keys[i]);
+                if (item == null)
+                    throw new Exception("Not possible remove not existing item");
                 if (item.IsDeleted == false)
                 {
                     item.IsDeleted = true;
@@ -215,6 +210,8 @@ namespace List_Dal.Repositories
         public async Task<bool> CompleteOrUncompleteTask(int key)
         {
             var item = await dbSet.FindAsync(key);
+            if (item == null)
+                throw new Exception("This item not existing");
             if(item.IsCompleted == false) 
             { 
                 item.IsCompleted= true;              

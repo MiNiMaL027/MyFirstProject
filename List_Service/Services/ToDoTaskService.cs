@@ -15,7 +15,7 @@ namespace List_Service.Services
 
         public async Task Add(ToDoTask item)
         {
-            if (await _repository.FindName(item.Title))
+            if (await _repository.FindByName(item.Title))
                 throw new Exception("This name you used");
             item.Title = item.Title.Trim();
             if (!ValidOptions.ValidName(item.Title))
@@ -104,16 +104,11 @@ namespace List_Service.Services
         public async Task<bool> Remove(long key)
         {
             return await _repository.Remove(key);
-        }
+        }     
 
-        public async Task<bool> SoftRemove(long key)
+        public async Task<List<int>> RemoveMiltiple(List<int> item)
         {
-            return await(_repository.SoftRemove(key));
-        }
-
-        public async Task<List<int>> SoftRemoveFew(List<int> item)
-        {
-            return await _repository.SoftRemoveFew(item);
+            return await _repository.RemoveMultiple(item);
         }
 
         public async Task<bool> Update(ToDoTask task)

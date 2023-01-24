@@ -2,6 +2,7 @@
 using List_Service.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using List_Service.Interfaces;
 
 namespace MyFirstProject_Api.Controllers
 {
@@ -9,8 +10,8 @@ namespace MyFirstProject_Api.Controllers
     [ApiController]
     public class ToDoTaskController : Controller
     {
-        public ToDoTaskService service { get; set; }
-        public ToDoTaskController(ToDoTaskService service)
+        private readonly IToDoTaskService<ToDoTask> service;
+        public ToDoTaskController(IToDoTaskService<ToDoTask> service)
         {
             this.service = service;
         }
@@ -105,24 +106,17 @@ namespace MyFirstProject_Api.Controllers
             return Ok(task.Id);
         }
 
-        [HttpDelete("SoftDelete")]
-        public async Task<ActionResult<int>> SoftDelete(long id)
-        {
-            await service.SoftRemove(id);
-            return Ok(id);
-        }
-
-        [HttpDelete("DataDelete")]
+        [HttpDelete("Delete")]
         public async Task<ActionResult<int>> Delete(long id)
         {
             await service.Remove(id);
             return Ok(id);
         }
 
-        [HttpDelete("SoftFewDelete")]
+        [HttpDelete("MultipleDelete")]
         public async Task<ActionResult<List<int>>> FewSoftDelete(List<int> ids)
         {
-            await service.SoftRemoveFew(ids);
+            await service.RemoveMiltiple(ids);
             return Ok(ids);
         }
 

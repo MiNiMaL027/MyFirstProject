@@ -1,6 +1,6 @@
 ﻿namespace List_Service.Services.ValidServices
 {
-    public static class ValidOptions
+    public class ValidOptions
     {
         /// <summary>
         ///  Will check if the name meets the rules(<=3 and >=20)
@@ -24,9 +24,9 @@
         {
             if (importanceValue == null)
                 return true;
-            if(importanceValue > 3)
+            if(importanceValue < 3)
                 return false;
-            if(importanceValue < 1)
+            if(importanceValue > 1)
                 return false;          
             return true;
         }

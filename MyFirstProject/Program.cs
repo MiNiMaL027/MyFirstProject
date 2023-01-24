@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using List_Service.Services;
 using List_Service.Interfaces;
 using List_Domain.Models;
+using List_Service.Services.ValidServices;
 
 namespace MyFirstProject
 {
@@ -23,6 +24,7 @@ namespace MyFirstProject
             builder.Services.AddScoped<IToDoTaskRepository<ToDoTask?> , ToDoTaskRepository>();
             builder.Services.AddScoped<ToDoListService>();
             builder.Services.AddScoped<ToDoTaskService>();
+            builder.Services.AddSingleton<ValidOptions>();
 
 
             var app = builder.Build();

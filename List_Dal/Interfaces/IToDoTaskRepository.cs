@@ -4,10 +4,10 @@ namespace List_Dal.Interfaces
 {
     public interface IToDoTaskRepository<T> : IDefaultRepository<T> where T : class
     {
-        Task<bool> FindName(string name);
+        Task<bool> FindByName(string name);
 
         Task<List<T>> GetAllTaskByList(long key);
-        Task<List<int>> SoftRemoveFew(List<int> item);
+        Task<List<int>> RemoveMultiple(List<int> item);
         //Task<List<T>> GetPlanned(int key);
         //Task<List<T>> GetPlanned();
         //Task<List<T>> GetImportant(int key,int importanceValue);

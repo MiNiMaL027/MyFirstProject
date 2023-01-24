@@ -15,7 +15,7 @@ namespace List_Service.Services
 
         public async Task Add(ToDoList list)
         {
-            if (await _repository.FindName(list.Name))
+            if (await _repository.CheckIfNameExist(list.Name))
                 throw new Exception("This name you used");
             list.Name = list.Name.Trim();
             if (!ValidOptions.ValidName(list.Name))
@@ -33,19 +33,14 @@ namespace List_Service.Services
             return (List<ToDoList>)await _repository.GetAll();
         }
 
-        public async Task<bool> Remove(long key)
-        {
-            return await _repository.Remove(key);
-        }
-
         public async Task<bool> Update(ToDoList list)
         {
            return await _repository.Update(list);
         }
 
-        public async Task<bool> SoftRemove(long key)
+        public async Task<bool> Remove(long key)
         {
-            return await _repository.SoftRemove(key);
+            return await _repository.Remove(key);
         }
     }
 }

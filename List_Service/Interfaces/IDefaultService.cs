@@ -8,7 +8,6 @@ namespace List_Service.Interfaces
         Task<List<T>> GetAll();
         Task<bool> Remove(long key);
         Task<bool> Update(T item);
-        Task<bool> SoftRemove(long key);
         Task Add(T item);
     }
 }

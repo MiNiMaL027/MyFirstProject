@@ -13,15 +13,16 @@ namespace List_Dal.Repositories
             db = context;
             dbSet = db.Set<ToDoList>();
         }
-        public async Task Add(ToDoList list)
+        public async Task<int> Add(ToDoList list)
         {
            dbSet.Add(list);
            await db.SaveChangesAsync();
+           return list.Id;
         }
 
         public async Task<ToDoList?> Get(long key)
         {
-            return await dbSet.FirstOrDefaultAsync(i=>i.Id == (int)key && i.IsDeleted == false);
+            return await dbSet.FirstOrDefaultAsync(i => i.Id == (int)key && i.IsDeleted == false);
         }
 
         public async Task<IEnumerable<ToDoList>> GetAll()
@@ -30,18 +31,6 @@ namespace List_Dal.Repositories
         }
 
         public async Task<bool> Remove(long key)
-        {
-            ToDoList? entity = await dbSet.FindAsync((int)key);
-            if(entity != null)
-            {
-                db.Remove(entity);
-                db.SaveChanges();
-                return true;
-            }
-            return false;
-        }
-
-        public async Task<bool> SoftRemove(long key)
         {
             var item = await dbSet.FindAsync((int)key);
             if(item.IsDeleted == false)
@@ -67,9 +56,9 @@ namespace List_Dal.Repositories
            return await dbSet.Select(x => x.Name).ToListAsync();
         }
 
-        public async Task<bool> FindName(string name)
+        public async Task<bool> CheckIfNameExist(string name)
         {
-            if (!await dbSet.AnyAsync(i=>i.Name == name))
+            if (!await dbSet.AnyAsync(i => i.Name == name))
                 return false;
             return true;          
         }

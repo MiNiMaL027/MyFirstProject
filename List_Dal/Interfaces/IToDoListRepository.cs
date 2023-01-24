@@ -4,7 +4,7 @@
     {
         Task<List<string>> GetNames();
 
-        Task<bool> FindName(string name);
+        Task<bool> CheckIfNameExist(string name);
 
     }
 }

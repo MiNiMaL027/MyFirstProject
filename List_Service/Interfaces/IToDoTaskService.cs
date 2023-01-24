@@ -2,10 +2,10 @@
 
 namespace List_Service.Interfaces
 {
-    internal interface IToDoTaskService<T> : IDefaultService<T> where T : class?
+    public interface IToDoTaskService<T> : IDefaultService<T> where T : class?
     {
         Task<List<T>> GetAllTaskByList(long id);
-        Task<List<int>> SoftRemoveFew(List<int> item);
+        Task<List<int>> RemoveMiltiple(List<int> item);
         //Task<List<T>> GetPlanned();
         //Task<List<T>> GetPlanned(int key);
         //Task<List<T>> GetImportant(int importanceValue);

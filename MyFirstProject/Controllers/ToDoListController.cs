@@ -1,6 +1,7 @@
 ﻿using List_Domain.Models;
 using List_Service.Services;
 using Microsoft.AspNetCore.Mvc;
+using List_Service.Interfaces;
 
 namespace MyFirstProject_Api.Controllers
 {
@@ -8,17 +9,16 @@ namespace MyFirstProject_Api.Controllers
     [ApiController]
     public class ToDoListController : Controller
     {
-        public ToDoListService service { get; set; }
-        public ToDoListController(ToDoListService service)
+        private readonly IToDoListService<ToDoList> service;
+        public ToDoListController(IToDoListService<ToDoList> service)
         {
             this.service = service;
         }
 
         [HttpGet("All")]
         public async Task<ActionResult<List<ToDoList>>> GetList() 
-        {
-            var c = Ok(await service.GetAll());
-            return c;
+        {        
+            return Ok(await service.GetAll());
         }
 
         [HttpGet("Alone")]
@@ -34,18 +34,10 @@ namespace MyFirstProject_Api.Controllers
             return Ok(list.Id);
         }
 
-        [HttpDelete("DataDelete")]
+        [HttpDelete("Delete")]
         public async Task<ActionResult<int>> Remove(long id)
         {
             if(await service.Remove(id))
-             return Ok(id);
-            return NotFound(id);
-        }
-
-        [HttpDelete("SoftDelete")]
-        public async Task<ActionResult<int>> SoftRemove(long id)
-        {
-            if(await service.SoftRemove(id))
                return Ok(id);
             return NotFound(id);
         }
